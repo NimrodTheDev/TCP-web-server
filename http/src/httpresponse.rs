@@ -1,7 +1,5 @@
-use std::{
-    collections::HashMap,
-    fmt::{Error, Write},
-};
+use std::io::Write;
+use std::{collections::HashMap, fmt::Error, net::TcpStream};
 
 #[derive(Debug, PartialEq, Clone)]
 pub struct HttpResponse<'a> {
@@ -52,7 +50,7 @@ impl<'a> HttpResponse<'a> {
 
         response
     }
-    pub fn send_response(&self, write_stream: &mut impl Write) -> Result<(), Error> {
+    pub fn send_response(&self, write_stream: &mut TcpStream) -> Result<(), Error> {
         let res = self.clone();
         let response_string = String::from(res);
         let _ = write!(write_stream, "{}", response_string);

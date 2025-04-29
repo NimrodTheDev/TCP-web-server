@@ -1,29 +1,31 @@
-use super::handler::{Handler, PageNotFoundHandler, StaticPageHandler, webServiceHandler};
-use http::{httprequest, httprequest::HttpRequest, httpresponse::HttpResponse};
+use super::handler::{Handler, PageNotFoundHandler, StaticPageHandler, WebServiceHandler};
+use http::httprequest::Method;
+use http::httprequest::Resource;
+use http::{httprequest::HttpRequest, httpresponse::HttpResponse};
 use std::io::prelude::*;
-
+use std::net::TcpStream;
 pub struct Router;
 impl Router {
-    pub fn route(req: HttpRequest, stream: &mut impl Write) -> () {
+    pub fn route(req: HttpRequest, stream: &mut TcpStream) -> () {
         match req.method {
-            httprequest::Method::Get => match &req.resource {
-                httprequest::Resource::path(s) => {
-                    let route = s.split("/").collect();
+            http::httprequest::Method::Get => match &req.resource {
+                http::httprequest::Resource::Path(s) => {
+                    let route: Vec<&str> = s.split("/").collect();
                     match route[1] {
                         "api" => {
-                            let resp = webServiceHandler::handler(&req);
+                            let resp = WebServiceHandler::handle(&req);
                             let _ = resp.send_response(stream);
                         }
                         _ => {
-                            let resp = StaticPageHandler::handler(&req);
-                            let _ = resp.send_message(stream);
+                            let resp: HttpResponse = StaticPageHandler::handle(&req);
+                            let _ = resp.send_response(stream);
                         }
                     }
                 }
             },
             _ => {
-                let resp = PageNotFoundHandler::handler(&req);
-                let _ = res.send_message(stream);
+                let resp = PageNotFoundHandler::handle(&req);
+                let _ = resp.send_response(stream);
             }
         }
     }

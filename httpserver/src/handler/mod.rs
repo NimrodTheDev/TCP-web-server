@@ -1,4 +1,5 @@
 use http::{httprequest::HttpRequest, httpresponse::HttpResponse};
+use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::env;
 use std::fs;
@@ -52,7 +53,7 @@ impl Handler for StaticPageHandler {
 pub struct PageNotFoundHandler;
 
 impl Handler for PageNotFoundHandler {
-    fn handle(req: &HttpRequest) -> HttpResponse {
+    fn handle(_req: &HttpRequest) -> HttpResponse {
         HttpResponse::new("404", None, Self::laod_file("404.html"))
     }
 }
