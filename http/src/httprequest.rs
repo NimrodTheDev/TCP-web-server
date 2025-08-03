@@ -18,7 +18,7 @@ impl From<&str> for Method {
 #[derive(Debug, PartialEq)]
 pub enum Version {
     V1_1,
-    v2_0,
+    V2_0,
     UnDone,
 }
 
@@ -26,7 +26,7 @@ impl From<&str> for Version {
     fn from(value: &str) -> Version {
         match value {
             "HTTP/1.1" => Version::V1_1,
-            "HTTP/2.0" => Version::v2_0,
+            "HTTP/2.0" => Version::V2_0,
             _ => Version::UnDone,
         }
     }
@@ -116,7 +116,7 @@ mod tests {
     #[test]
     fn test_version_into() {
         let m: Version = "HTTP/2.0".into();
-        assert_eq!(m, Version::v2_0)
+        assert_eq!(m, Version::V2_0)
     }
     #[test]
     fn test_read_http() {

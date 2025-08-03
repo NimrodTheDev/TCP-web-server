@@ -1,4 +1,9 @@
 [workspace]
 members = [
-"tcpserver","tcpclient", "http", "httpserver",
+    "tcpserver",
+    "tcpclient",
+    "http",
+    "httpserver",
+    "udpserver",
+    "udpclient"
 ]
